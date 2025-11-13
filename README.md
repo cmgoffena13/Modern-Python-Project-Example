@@ -19,9 +19,6 @@ Example Python Project showcasing best practices in configuration, logging, test
     - Handlers determine the destination of the logs
  - Formatter
     - Specifies the format of the log message itself
- - Filter
-    - Dynamically enriches logs with additional context
-    - Provides a way to include/exclude log entries dynamically
 
 ### Logger Levels
  - DEBUG
