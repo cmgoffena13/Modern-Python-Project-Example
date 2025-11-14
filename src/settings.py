@@ -14,7 +14,8 @@ class BaseConfig(BaseSettings):
 class GlobalConfig(BaseConfig):
     LOG_LEVEL: str = "INFO"
     OTEL_PYTHON_LOG_CORRELATION: Optional[bool] = None
-    OPEN_TELEMETRY_ENDPOINT: Optional[str] = None
+    OPEN_TELEMETRY_TRACE_ENDPOINT: Optional[str] = None
+    OPEN_TELEMETRY_LOG_ENDPOINT: Optional[str] = None
     OPEN_TELEMETRY_AUTHORIZATION_TOKEN: Optional[str] = None
 
 
