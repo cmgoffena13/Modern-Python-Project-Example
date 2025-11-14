@@ -1,7 +1,9 @@
 import logging
+from typing import Any, Dict, Iterator
 
 from opentelemetry import trace
 
+from src.pipeline.read.factory import ReaderFactory
 from src.sources.base import SourceConfig
 
 logger = logging.getLogger(__name__)
@@ -15,10 +17,13 @@ class PipelineRunner:
         self.grain = source_config.grain
         self.audit_query = source_config.audit_query
 
-    def read_data(self):
+    def read_data(self) -> Iterator[Dict[str, Any]]:
         logger.info(f"Writing data to stage_{self.source_config.name}")
+        reader = ReaderFactory.get_reader(self.source_config)
+        for data in reader.read():
+            yield data
 
-    def validate_data(self):
+    def validate_data(self, data: list[Dict[str, Any]]):
         logger.info(f"Validating data for stage_{self.source_config.name}")
 
     def write_data(self):
