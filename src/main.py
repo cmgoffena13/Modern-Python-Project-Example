@@ -2,29 +2,20 @@ import logging
 import multiprocessing
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from opentelemetry import trace
-
 from src.logging_conf import setup_logging
 from src.pipeline.runner import PipelineRunner
 from src.settings import config
 from src.sources.registry import MASTER_REGISTRY
 
 logger = logging.getLogger(__name__)
-tracer = trace.get_tracer(__name__)
 
 CPU_COUNT = multiprocessing.cpu_count() or 1
 logger.info(f"Using {CPU_COUNT} CPU cores")
 
 
 def run_pipeline(source_config):
-    with tracer.start_as_current_span(f"pipeline.{source_config.name}") as span:
-        pipeline_runner = PipelineRunner(source_config)
-        result = pipeline_runner.run()
-        if result and result[0]:
-            span.set_status(trace.Status(trace.StatusCode.OK))
-        else:
-            span.set_status(trace.Status(trace.StatusCode.ERROR, "Pipeline failed"))
-        return result
+    pipeline_runner = PipelineRunner(source_config)
+    return pipeline_runner.run()
 
 
 def main():
